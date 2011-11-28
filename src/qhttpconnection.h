@@ -43,13 +43,13 @@ public:
     QHttpConnection(QTcpSocket *socket, QObject *parent = 0);
     virtual ~QHttpConnection();
 
-    void write(const QByteArray &data);
+    bool write(const QByteArray &data);
     void flush();
 
-signals:
+Q_SIGNALS:
     void newRequest(QHttpRequest*, QHttpResponse*);
 
-private slots:
+private Q_SLOTS:
     void parseRequest();
     void responseDone();
 

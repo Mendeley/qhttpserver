@@ -137,7 +137,7 @@ public:
      */
     bool listen(quint16 port);
 
-signals:
+Q_SIGNALS:
     /*!
      * This signal is emitted whenever a client
      * makes a new request to the server.
@@ -215,7 +215,7 @@ signals:
      */
     void newRequest(QHttpRequest *request, QHttpResponse *response);
 
-private slots:
+private Q_SLOTS:
     void newConnection();
 
 private:

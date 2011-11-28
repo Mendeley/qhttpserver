@@ -136,7 +136,7 @@ public:
      */
     quint16 remotePort() const { return m_remotePort; };
 
-signals:
+Q_SIGNALS:
     /*!
      * This signal is emitted whenever body data is encountered
      * in a message.

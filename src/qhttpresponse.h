@@ -53,14 +53,14 @@ class QHttpResponse : public QObject
 public:
     virtual ~QHttpResponse();
 
-public slots:
+public Q_SLOTS:
     /*!
      * Write the header of the response
      * using @c status as the response status
      * code. Any headers should be set before this
      * is called.
      */
-    void writeHead(int status);
+    bool writeHead(int status);
 
     /*!
      * Write the block of data to the client.
@@ -69,13 +69,13 @@ public slots:
      * writeHead() has to be called before write(), otherwise the call will
      * fail.
      */
-    void write(const QByteArray &data);
+    bool write(const QByteArray &data);
 
     /*!
      * Write a QString instead of a QByteArray.
      * \see write(const QByteArray &);
      */
-    void write(const QString &data);
+    bool write(const QString &data);
 
     /*!
      * End the response. Data will be flushed
@@ -93,7 +93,7 @@ public slots:
      */
     void setHeader(const QString &field, const QString &value);
 
-signals:
+Q_SIGNALS:
     /*!
      * Emitted once the response is finished.
      * You should NOT interact with this object

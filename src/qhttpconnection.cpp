@@ -85,9 +85,9 @@ void QHttpConnection::parseRequest()
     }
 }
 
-void QHttpConnection::write(const QByteArray &data)
+bool QHttpConnection::write(const QByteArray &data)
 {
-    m_socket->write(data);
+    return (m_socket->write(data) != -1);
 }
 
 void QHttpConnection::flush()
@@ -180,6 +180,8 @@ int QHttpConnection::Path(http_parser *parser, const char *at, size_t length)
 
 int QHttpConnection::QueryString(http_parser *parser, const char *at, size_t length)
 {
+	Q_UNUSED(at);
+	Q_UNUSED(length);
     QHttpConnection *theConnection = (QHttpConnection *)parser->data;
     Q_ASSERT(theConnection->m_request);
 
@@ -189,6 +191,9 @@ int QHttpConnection::QueryString(http_parser *parser, const char *at, size_t len
 
 int QHttpConnection::Url(http_parser *parser, const char *at, size_t length)
 {
+	Q_UNUSED(parser);
+	Q_UNUSED(at);
+	Q_UNUSED(length);
 //    qDebug() << "URL CALL" << QString::fromAscii(at, length);
 //    QHttpConnection *theConnection = (QHttpConnection *)parser->data;
 //    theConnection->m_request->m_url->setPath(QString::fromAscii(at, length));
@@ -198,6 +203,9 @@ int QHttpConnection::Url(http_parser *parser, const char *at, size_t length)
 
 int QHttpConnection::Fragment(http_parser *parser, const char *at, size_t length)
 {
+	Q_UNUSED(parser);
+	Q_UNUSED(at);
+	Q_UNUSED(length);
     // TODO: Implement
     Q_ASSERT(false);
     return 0;

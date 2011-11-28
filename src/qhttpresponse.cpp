@@ -58,9 +58,14 @@ void QHttpResponse::writeHeaders()
     m_connection->write("\r\n");\
     } while(0)
 
-    foreach(QString name, m_headers.keys())
+	QHashIterator<QString, QString> headerIterator(m_headers);
+
+	while( headerIterator.hasNext() )
     {
-        QString value = m_headers[name];
+		headerIterator.next();
+		const QString& name = headerIterator.key();
+		const QString& value = headerIterator.value();
+
         if( name.compare("connection", Qt::CaseInsensitive) == 0 ) 
         {
             m_sentConnectionHeader = true;
@@ -107,9 +112,12 @@ void QHttpResponse::writeHeaders()
     }
 }
 
-void QHttpResponse::writeHead(int status)
+bool QHttpResponse::writeHead(int status)
 {
-    if( m_headerWritten ) return;
+    if( m_headerWritten ) 
+	{
+		return false;
+	}
 
     m_connection->write(QString("HTTP/1.1 %1 %2\r\n").arg(status).arg(STATUS_CODES[status]).toAscii());
     
@@ -117,22 +125,22 @@ void QHttpResponse::writeHead(int status)
 
     m_connection->write("\r\n");
     m_headerWritten = true;
+	return true;
 }
 
-void QHttpResponse::write(const QByteArray &data)
+bool QHttpResponse::write(const QByteArray &data)
 {
     if( !m_headerWritten )
     {
-        qDebug() << "You MUST call writeHead() before writing body data";
-        return;
+        return false;
     }
 
-    m_connection->write(data);
+	return m_connection->write(data);
 }
 
-void QHttpResponse::write(const QString &data)
+bool QHttpResponse::write(const QString &data)
 {
-    m_connection->write(data.toUtf8());
+    return m_connection->write(data.toUtf8());
 }
 
 void QHttpResponse::end(const QString &data)
