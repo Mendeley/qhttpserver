@@ -11,6 +11,8 @@ anything complex**
 Installation
 ------------
 
+git clone https://github.com/joyent/http-parser
+
 Requires Qt 4.
 
     qmake && make && su -c 'make install'
