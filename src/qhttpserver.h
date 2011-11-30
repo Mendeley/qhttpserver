@@ -35,16 +35,6 @@ class QTcpServer;
 class QHttpRequest;
 class QHttpResponse;
 
-/*!
- * A map of request or response headers
- */
-typedef QHash<QString, QString> HeaderHash;
-
-/*!
- * Maps status codes to string reason phrases
- */
-extern QHash<int, QString> STATUS_CODES;
-
 /*! \mainpage %QHttpServer Documentation
  *
  * \section introduction Introduction
@@ -217,6 +207,13 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void newConnection();
+
+	public:
+
+/*!
+ * Maps status codes to string reason phrases
+ */
+static const QHash<int, QString> STATUS_CODES;
 
 private:
     QTcpServer *m_tcpServer;

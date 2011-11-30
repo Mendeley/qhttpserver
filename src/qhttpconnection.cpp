@@ -164,13 +164,10 @@ int QHttpConnection::MessageComplete(http_parser *parser)
 
 int QHttpConnection::Url(http_parser *parser, const char *at, size_t length)
 {
-	Q_UNUSED(parser);
-	Q_UNUSED(at);
-	Q_UNUSED(length);
-//    qDebug() << "URL CALL" << QString::fromAscii(at, length);
-//    QHttpConnection *theConnection = (QHttpConnection *)parser->data;
-//    theConnection->m_request->m_url->setPath(QString::fromAscii(at, length));
-
+	QHttpConnection *theConnection = (QHttpConnection *)parser->data;
+	QUrl url = theConnection->m_request->url();
+	url.setPath(QString::fromAscii(at, length));
+	theConnection->m_request->setUrl(url);
     return 0;
 }
 

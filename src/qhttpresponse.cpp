@@ -24,6 +24,7 @@
 
 #include "qhttpserver.h"
 #include "qhttpconnection.h"
+#include "HttpStatusCodes.h"
 
 QHttpResponse::QHttpResponse(QHttpConnection *connection)
     // TODO: parent child relation
@@ -119,7 +120,14 @@ bool QHttpResponse::writeHead(int status)
 		return false;
 	}
 
-    m_connection->write(QString("HTTP/1.1 %1 %2\r\n").arg(status).arg(STATUS_CODES[status]).toAscii());
+	const QHash<int, QString>& codes = HttpStatusCodes::codes();
+
+	if( ! codes.contains(status) )
+	{
+		qDebug() << "Invalid status code"<<status;
+		return false;
+	}
+    m_connection->write(QString("HTTP/1.1 %1 %2\r\n").arg(status).arg(codes.value(status)).toAscii());
     
     writeHeaders();
 
