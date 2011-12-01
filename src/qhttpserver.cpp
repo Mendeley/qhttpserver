@@ -39,6 +39,7 @@ QHttpServer::QHttpServer(QObject *parent)
 
 QHttpServer::~QHttpServer()
 {
+	delete m_tcpServer;
 }
 
 void QHttpServer::newConnection()
@@ -53,6 +54,11 @@ void QHttpServer::newConnection()
 
 bool QHttpServer::listen(const QHostAddress &address, quint16 port)
 {
+	if( m_tcpServer )
+	{
+		delete m_tcpServer;
+	}
+
     m_tcpServer = new QTcpServer;
 
     connect(m_tcpServer, SIGNAL(newConnection()), this, SLOT(newConnection()));

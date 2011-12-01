@@ -27,8 +27,7 @@
 #include "HttpStatusCodes.h"
 
 QHttpResponse::QHttpResponse(QHttpConnection *connection)
-    // TODO: parent child relation
-    : QObject(0)
+    : QObject(connection)
     , m_connection(connection)
     , m_headerWritten(false)
     , m_sentConnectionHeader(false)
@@ -37,6 +36,7 @@ QHttpResponse::QHttpResponse(QHttpConnection *connection)
     , m_keepAlive(true)
     , m_last(false)
     , m_useChunkedEncoding(false)
+	, m_isDone(false)
 {
 }
 
@@ -46,11 +46,17 @@ QHttpResponse::~QHttpResponse()
 
 void QHttpResponse::setHeader(const QString &field, const QString &value)
 {
+	Q_ASSERT(! m_isDone);
+	Q_ASSERT(m_connection);
+
     m_headers[field] = value;
 }
 
 void QHttpResponse::writeHeaders()
 {
+	Q_ASSERT(! m_isDone);
+	Q_ASSERT(m_connection);
+
 	QHashIterator<QString, QString> headerIterator(m_headers);
 
 	while( headerIterator.hasNext() )
@@ -107,6 +113,9 @@ void QHttpResponse::writeHeaders()
 
 bool QHttpResponse::writeHead(int status)
 {
+	Q_ASSERT(! m_isDone);
+	Q_ASSERT(m_connection);
+
     if( m_headerWritten ) 
 	{
 		return false;
@@ -130,6 +139,10 @@ bool QHttpResponse::writeHead(int status)
 
 bool QHttpResponse::write(const QByteArray &data)
 {
+	Q_ASSERT(! m_isDone);
+	Q_ASSERT(m_connection);
+
+
     if( !m_headerWritten )
     {
         return false;
@@ -140,14 +153,23 @@ bool QHttpResponse::write(const QByteArray &data)
 
 bool QHttpResponse::write(const QString &data)
 {
+	Q_ASSERT(! m_isDone);
+	Q_ASSERT(m_connection);
+
+
     return m_connection->write(data.toUtf8());
 }
 
 void QHttpResponse::end(const QString &data)
 {
+	Q_ASSERT(! m_isDone);
+	Q_ASSERT(m_connection);
+
     write(data);
 
+	m_isDone = true;
     emit done();
+
     deleteLater();
     // TODO: end connection and delete ourselves
 }

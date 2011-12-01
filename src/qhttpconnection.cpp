@@ -34,6 +34,7 @@ QHttpConnection::QHttpConnection(QTcpSocket *socket, QObject *parent)
     , m_socket(socket)
     , m_parser(0)
 {
+	m_socket->setParent(this);
     qDebug() << "Got new connection" << socket->peerAddress() << socket->peerPort();
 
     m_parser = (http_parser*)malloc(sizeof(http_parser));
@@ -55,10 +56,7 @@ QHttpConnection::QHttpConnection(QTcpSocket *socket, QObject *parent)
 
 QHttpConnection::~QHttpConnection()
 {
-    delete m_socket;
-    m_socket = 0;
-
-    free(m_parser);
+	free(m_parser);
     m_parser = 0;
 }
 
@@ -113,7 +111,7 @@ int QHttpConnection::MessageBegin(http_parser *parser)
 {
     QHttpConnection *theConnection = (QHttpConnection *)parser->data;
     theConnection->m_currentHeaders.clear();
-    theConnection->m_request = new QHttpRequest(theConnection);
+    theConnection->m_request = new QHttpRequest(theConnection,theConnection);
     return 0;
 }
 

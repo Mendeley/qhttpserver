@@ -120,6 +120,7 @@ private:
     bool m_keepAlive;
     bool m_last;
     bool m_useChunkedEncoding;
+	bool m_isDone;
 };
 
 #endif
