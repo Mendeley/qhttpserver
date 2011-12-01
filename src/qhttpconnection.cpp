@@ -86,6 +86,12 @@ bool QHttpConnection::write(const QByteArray &data)
     return (m_socket->write(data) != -1);
 }
 
+
+bool QHttpConnection::writeHeader(const QByteArray& field, const QByteArray& value)
+{
+	return write(field+':'+value+"\r\n");
+}
+
 void QHttpConnection::flush()
 {
     m_socket->flush();

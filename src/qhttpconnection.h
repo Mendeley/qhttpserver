@@ -44,6 +44,7 @@ public:
     virtual ~QHttpConnection();
 
     bool write(const QByteArray &data);
+	bool writeHeader(const QByteArray& field, const QByteArray& value);
     void flush();
 
 Q_SIGNALS:
