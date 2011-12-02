@@ -9,6 +9,6 @@ class Hello : public QObject
 public:
     Hello();
 
-private slots:
+private Q_SLOTS:
     void handle(QHttpRequest *req, QHttpResponse *resp);
 };
