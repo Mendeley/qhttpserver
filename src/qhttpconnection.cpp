@@ -22,8 +22,8 @@
 
 #include "qhttpconnection.h"
 
-#include <QTcpSocket>
-#include <QHostAddress>
+#include <QtNetwork/QTcpSocket>
+#include <QtNetwork/QHostAddress>
 #include <QDebug>
 
 #include "qhttprequest.h"

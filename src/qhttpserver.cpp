@@ -22,8 +22,8 @@
 
 #include "qhttpserver.h"
 
-#include <QTcpServer>
-#include <QTcpSocket>
+#include <QtNetwork/QTcpServer>
+#include <QtNetwork/QTcpSocket>
 #include <QVariant>
 #include <QDebug>
 

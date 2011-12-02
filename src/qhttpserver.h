@@ -28,7 +28,7 @@
 #define QHTTPSERVER_VERSION_PATCH 0
 
 #include <QObject>
-#include <QHostAddress>
+#include <QtNetwork/QHostAddress>
 
 class QTcpServer;
 
