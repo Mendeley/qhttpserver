@@ -169,9 +169,8 @@ int QHttpConnection::MessageComplete(http_parser *parser)
 int QHttpConnection::Url(http_parser *parser, const char *at, size_t length)
 {
 	QHttpConnection *theConnection = (QHttpConnection *)parser->data;
-	QUrl url = theConnection->m_request->url();
-	url.setPath(QString::fromAscii(at, length));
-	theConnection->m_request->setUrl(url);
+	QUrl localUrl(QString::fromUtf8(at,length));
+	theConnection->m_request->setUrl(theConnection->m_request->url().resolved(localUrl));
     return 0;
 }
 
