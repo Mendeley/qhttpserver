@@ -22,6 +22,8 @@
 
 #include "qhttpresponse.h"
 
+#include <QDebug>
+
 #include "qhttpserver.h"
 #include "qhttpconnection.h"
 #include "HttpStatusCodes.h"
