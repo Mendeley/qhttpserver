@@ -29,9 +29,11 @@ QHttpRequest::QHttpRequest(QHttpConnection *connection, QObject *parent)
     , m_connection(connection)
     , m_url("http://localhost/")
 {
+	m_connection->ref();
 }
 
 QHttpRequest::~QHttpRequest()
 {
+	m_connection->deref();
 }
 

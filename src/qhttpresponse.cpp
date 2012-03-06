@@ -40,10 +40,12 @@ QHttpResponse::QHttpResponse(QHttpConnection *connection)
     , m_useChunkedEncoding(false)
 	, m_isDone(false)
 {
+	m_connection->ref();
 }
 
 QHttpResponse::~QHttpResponse()
 {
+	m_connection->deref();
 }
 
 void QHttpResponse::setHeader(const QString &field, const QString &value)

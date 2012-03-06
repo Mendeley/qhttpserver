@@ -47,12 +47,23 @@ public:
 	bool writeHeader(const QByteArray& field, const QByteArray& value);
     void flush();
 
+    /** Increment the count of users of this connection (eg. a QHttpRequest
+      * or QHttpResponse instance.
+      */
+    void ref();
+    /** Decrement the count of users of this connection.
+      * The connection is released when the socket passed to the constructor
+      * is disconnected and there are no active users.
+      */
+    void deref();
+
 Q_SIGNALS:
     void newRequest(QHttpRequest*, QHttpResponse*);
 
 private Q_SLOTS:
     void parseRequest();
     void responseDone();
+    void deleteLaterIfIdle();
 
 private:
     static int MessageBegin(http_parser *parser);
@@ -64,6 +75,9 @@ private:
     static int MessageComplete(http_parser *parser);
 
 private:
+    // count of active users of this QHttpConnection
+    int m_ref;
+
     QTcpSocket *m_socket;
     http_parser_settings m_parserSettings;
     http_parser *m_parser;

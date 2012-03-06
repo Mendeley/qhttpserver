@@ -31,6 +31,7 @@
 
 QHttpConnection::QHttpConnection(QTcpSocket *socket, QObject *parent)
     : QObject(parent)
+    , m_ref(0)
     , m_socket(socket)
     , m_parser(0)
 {
@@ -51,13 +52,32 @@ QHttpConnection::QHttpConnection(QTcpSocket *socket, QObject *parent)
     m_parser->data = this;
 
     connect(socket, SIGNAL(readyRead()), this, SLOT(parseRequest()));
-    connect(socket, SIGNAL(disconnected()), this, SLOT(deleteLater()));
+    connect(socket, SIGNAL(disconnected()), this, SLOT(deleteLaterIfIdle()));
 }
 
 QHttpConnection::~QHttpConnection()
 {
 	free(m_parser);
     m_parser = 0;
+}
+
+void QHttpConnection::ref()
+{
+	++m_ref;
+}
+
+void QHttpConnection::deref()
+{
+	--m_ref;
+	deleteLaterIfIdle();
+}
+
+void QHttpConnection::deleteLaterIfIdle()
+{
+	if (m_ref == 0 && m_socket->state() == QAbstractSocket::UnconnectedState)
+	{
+		deleteLater();
+	}
 }
 
 void QHttpConnection::parseRequest()
