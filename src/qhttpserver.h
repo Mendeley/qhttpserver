@@ -140,14 +140,10 @@ Q_SIGNALS:
      * The QHttpRequest and QHttpResponse deletion policies
      * are such.
      *
-     * QHttpRequest is <strong>never</strong> deleted by %QHttpServer.
-     * Since it is not possible to determine till what point the application
-     * may want access to its data, it is up to the application to delete it.
-     * A recommended way to handle this is to create a new responder object for
-     * every request and to delete the request in that object's destructor. The
-     * object itself can be deleted by connecting to QHttpResponse's done()
-     * slot as explained below.
-     *
+     * QHttpRequest is only deleted by %QHttpServer when the associated connection
+	 * is closed.  Consumers can delete it sooner once the end() signal has been emitted -
+	 * see below for an example.
+	 *
      * You should <strong>NOT</strong> delete the QHttpRequest object until it
      * has emitted an QHttpRequest::end() signal.
      *
