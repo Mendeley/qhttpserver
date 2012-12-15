@@ -1,9 +1,15 @@
 project (qhttpserver)
 
 # find and config Qt
-FIND_PACKAGE( Qt4 REQUIRED )
-INCLUDE( ${QT_USE_FILE} )
-SET( QT_DONT_USE_QTGUI TRUE )
+if (USE_QT5)
+  find_package(Qt5Network REQUIRED)
+  include_directories(${Qt5Network_INCLUDE_DIRS})
+  set(QT_LIBRARIES ${Qt5Network_LIBRARIES})
+else()
+  FIND_PACKAGE( Qt4 REQUIRED )
+  INCLUDE( ${QT_USE_FILE} )
+  SET( QT_DONT_USE_QTGUI TRUE )
+endif()
 
 # source dir
 set(QHTTPSERVER_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
