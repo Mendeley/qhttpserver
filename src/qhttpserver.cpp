@@ -69,3 +69,13 @@ bool QHttpServer::listen(quint16 port)
 {
     return listen(QHostAddress::Any, port);
 }
+
+QString QHttpServer::errorString() const
+{
+    if(!m_tcpServer)
+    {
+        return QString();
+    }
+    return m_tcpServer->errorString();
+}
+

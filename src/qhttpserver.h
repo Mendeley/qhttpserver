@@ -127,6 +127,10 @@ public:
      */
     bool listen(quint16 port);
 
+    /** Returns the last error that occurred when setting up the server.
+     */
+    QString errorString() const;
+
 Q_SIGNALS:
     /*!
      * This signal is emitted whenever a client
