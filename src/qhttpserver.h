@@ -119,6 +119,12 @@ public:
     bool listen(const QHostAddress &address = QHostAddress::Any, quint16 port=0);
 
     /*!
+     * The server's listening port.
+     * \return the listening port, 0 if the server wasn't started successfully. 
+     */
+    quint16 serverPort() const;
+
+    /*!
      * Starts the server on @c port listening on all interfaces.
      *
      * \param port Port number on which the server should run.
