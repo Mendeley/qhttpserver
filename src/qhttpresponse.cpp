@@ -87,7 +87,7 @@ void QHttpResponse::writeHeaders()
         }
         //TODO: Expect case
 
-        m_connection->writeHeader(name.toAscii(), value.toAscii());
+        m_connection->writeHeader(name.toLatin1(), value.toLatin1());
     }
 
     if( !m_sentConnectionHeader )
@@ -130,7 +130,7 @@ bool QHttpResponse::writeHead(int status)
 		qDebug() << "Invalid status code"<<status;
 		return false;
 	}
-    m_connection->write(QString("HTTP/1.1 %1 %2\r\n").arg(status).arg(codes.value(status)).toAscii());
+    m_connection->write(QString("HTTP/1.1 %1 %2\r\n").arg(status).arg(codes.value(status)).toLatin1());
     
     writeHeaders();
 
